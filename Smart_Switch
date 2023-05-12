@@ -1,0 +1,70 @@
+#include <WiFi.h>
+#include <TuyaSmart.h>
+
+// WiFi credentials
+const char* ssid = "tuSSID";
+const char* password = "tuContrasena";
+
+// Tuya Smart Life credentials
+#define DEVICE_ID "tuDeviceID"
+#define DEVICE_KEY "tuDeviceKey"
+#define DEVICE_TYPE "tuDeviceType"
+
+// Pin donde está conectado el relé
+const int relayPin = 23;
+
+// Pin donde está conectado el interruptor
+const int switchPin = 22;
+
+// Estado del LED
+bool ledState = false;
+
+// Objeto de la librería TuyaSmart
+TuyaSmart tuya(DEVICE_ID, DEVICE_KEY, DEVICE_TYPE);
+
+// Función para cambiar el estado del LED
+void changeLedState(bool state) {
+  digitalWrite(relayPin, state ? HIGH : LOW);
+  ledState = state;
+}
+
+// Función para recibir los comandos de la aplicación Tuya Smart Life
+void onTuyaCommand(const String& value) {
+  if (value == "true") {
+    changeLedState(true);
+  } else if (value == "false") {
+    changeLedState(false);
+  }
+}
+
+void setup() {
+  // Configurar el pin del relé como salida
+  pinMode(relayPin, OUTPUT);
+
+  // Configurar el pin del interruptor como entrada con pull-up interno
+  pinMode(switchPin, INPUT_PULLUP);
+
+  // Conectar al WiFi
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+  }
+
+  // Iniciar la comunicación con Tuya Smart Life
+  tuya.begin(onTuyaCommand);
+}
+
+void loop() {
+  // Verificar el estado del interruptor y cambiar el estado del LED
+  bool switchState = digitalRead(switchPin);
+  if (switchState == LOW && ledState == false) {
+    changeLedState(true);
+    tuya.sendDPData("1", "bool", "true");
+  } else if (switchState == LOW && ledState == true) {
+    changeLedState(false);
+    tuya.sendDPData("1", "bool", "false");
+  }
+
+  // Actualizar la conexión con Tuya Smart Life
+  tuya.update();
+}
