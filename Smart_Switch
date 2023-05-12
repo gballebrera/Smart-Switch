@@ -23,13 +23,13 @@ bool ledState = false;
 // Objeto de la librería TuyaSmart
 TuyaSmart tuya(DEVICE_ID, DEVICE_KEY, DEVICE_TYPE);
 
-// Función para cambiar el estado del relé
+// Aquí se cambia el estado del relé
 void changeLedState(bool state) {
   digitalWrite(relayPin, state ? HIGH : LOW);
   ledState = state;
 }
 
-// Función para recibir los comandos de la aplicación Tuya Smart Life
+// Aquí se recibo los datos de la aplicación Tuya Smart Life
 void onTuyaCommand(const String& value) {
   if (value == "true") {
     changeLedState(true);
@@ -39,10 +39,10 @@ void onTuyaCommand(const String& value) {
 }
 
 void setup() {
-  // Configurar el pin del relé como salida
+  // Configuro el pin del relé como salida
   pinMode(relayPin, OUTPUT);
 
-  // Configurar el pin del interruptor como entrada con pull-up interno
+  // Configuro el pin del interruptor como entrada con pull-up interno
   pinMode(switchPin, INPUT_PULLUP);
 
   // Me conecto al WiFi
