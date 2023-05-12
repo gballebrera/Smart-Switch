@@ -37,7 +37,7 @@ void onTuyaCommand(const String& value) {
     changeLedState(false);
   }
 }
-
+//Esto solo lo hace una vez
 void setup() {
   // Configuro el pin del relé como salida
   pinMode(relayPin, OUTPUT);
@@ -54,7 +54,7 @@ void setup() {
   // Aqui inicio la comunicación con Tuya Smart Life
   tuya.begin(onTuyaCommand);
 }
-
+//Esto es lo que va a hacer todo el rato en bucle
 void loop() {
   // Se verifica el estado del interruptor y se cambia el estado del relé
   bool switchState = digitalRead(switchPin);
