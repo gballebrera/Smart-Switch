@@ -20,7 +20,7 @@ const int switchPin = 22;
 // Estado del relé
 bool ledState = false;
 
-// Objeto de la librería TuyaSmart
+// Lo de la librería TuyaSmart
 TuyaSmart tuya(DEVICE_ID, DEVICE_KEY, DEVICE_TYPE);
 
 // Aquí se cambia el estado del relé
@@ -29,7 +29,7 @@ void changeLedState(bool state) {
   ledState = state;
 }
 
-// Aquí se recibo los datos de la aplicación Tuya Smart Life
+// Aquí recibo los datos de la aplicación Tuya Smart Life
 void onTuyaCommand(const String& value) {
   if (value == "true") {
     changeLedState(true);
@@ -51,7 +51,7 @@ void setup() {
     delay(1000);
   }
 
-  // Aqui inicio la comunicación con Tuya Smart Life
+  // Inicio la comunicación con Tuya Smart Life
   tuya.begin(onTuyaCommand);
 }
 //Esto es lo que va a hacer todo el rato en bucle
