@@ -66,6 +66,6 @@ void loop() {
     tuya.sendDPData("1", "bool", "false");
   }
 
-  // Actualizo la conexión con Tuya Smart Life
+  // Actualizo la conexión con Tuya Smart Life todo el rato
   tuya.update();
 }
